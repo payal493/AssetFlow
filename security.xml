@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Security Groups -->
+        <record id="group_assetflow_admin" model="res.groups">
+            <field name="name">AssetFlow Admin</field>
+            <field name="category_id" ref="base.module_category_human_resources"/>
+            <field name="comment">Full access to all AssetFlow features</field>
+        </record>
+
+        <record id="group_assetflow_asset_manager" model="res.groups">
+            <field name="name">AssetFlow Asset Manager</field>
+            <field name="category_id" ref="base.module_category_human_resources"/>
+            <field name="comment">Read access to departments, employees, and categories</field>
+        </record>
+
+        <record id="group_assetflow_department_head" model="res.groups">
+            <field name="name">AssetFlow Department Head</field>
+            <field name="category_id" ref="base.module_category_human_resources"/>
+            <field name="comment">Read access to employees and departments</field>
+        </record>
+
+        <record id="group_assetflow_employee" model="res.groups">
+            <field name="name">AssetFlow Employee</field>
+            <field name="category_id" ref="base.module_category_human_resources"/>
+            <field name="comment">Read-only access to own employee record</field>
+        </record>
+
+        <!-- Record Rules for Employee Model -->
+        
+        <!-- Admin: Full access to all employees -->
+        <record id="assetflow_employee_admin_rule" model="ir.rule">
+            <field name="name">Employee Admin Access</field>
+            <field name="model_id" ref="model_assetflow_employee"/>
+            <field name="groups" eval="[(4, ref('group_assetflow_admin'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+        <!-- Asset Manager: Read-only access to all employees -->
+        <record id="assetflow_employee_asset_manager_rule" model="ir.rule">
+            <field name="name">Employee Asset Manager Access</field>
+            <field name="model_id" ref="model_assetflow_employee"/>
+            <field name="groups" eval="[(4, ref('group_assetflow_asset_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+        <!-- Department Head: Read-only access to employees in their department -->
+        <record id="assetflow_employee_department_head_rule" model="ir.rule">
+            <field name="name">Employee Department Head Access</field>
+            <field name="model_id" ref="model_assetflow_employee"/>
+            <field name="groups" eval="[(4, ref('group_assetflow_department_head'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="domain_force">[('department_id.manager_id.user_id', '=', user.id)]</field>
+        </record>
+
+        <!-- Employee: Read-only access to their own employee record -->
+        <record id="assetflow_employee_employee_rule" model="ir.rule">
+            <field name="name">Employee Self-Service Access</field>
+            <field name="model_id" ref="model_assetflow_employee"/>
+            <field name="groups" eval="[(4, ref('group_assetflow_employee'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="domain_force">[('user_id', '=', user.id)]</field>
+        </record>
+
+        <!-- Record Rules for Department Model -->
+
+        <!-- Admin: Full access to all departments -->
+        <record id="assetflow_department_admin_rule" model="ir.rule">
+            <field name="name">Department Admin Access</field>
+            <field name="model_id" ref="model_assetflow_department"/>
+            <field name="groups" eval="[(4, ref('group_assetflow_admin'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+        <!-- Asset Manager: Read-only access to all departments -->
+        <record id="assetflow_department_asset_manager_rule" model="ir.rule">
+            <field name="name">Department Asset Manager Access</field>
+            <field name="model_id" ref="model_assetflow_department"/>
+            <field name="groups" eval="[(4, ref('group_assetflow_asset_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+        <!-- Department Head: Read-only access to their own department -->
+        <record id="assetflow_department_department_head_rule" model="ir.rule">
+            <field name="name">Department Department Head Access</field>
+            <field name="model_id" ref="model_assetflow_department"/>
+            <field name="groups" eval="[(4, ref('group_assetflow_department_head'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="domain_force">[('manager_id.user_id', '=', user.id)]</field>
+        </record>
+
+        <!-- Record Rules for Category Model -->
+
+        <!-- Admin: Full access to all categories -->
+        <record id="assetflow_category_admin_rule" model="ir.rule">
+            <field name="name">Category Admin Access</field>
+            <field name="model_id" ref="model_assetflow_category"/>
+            <field name="groups" eval="[(4, ref('group_assetflow_admin'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+        <!-- Asset Manager: Read-only access to all categories -->
+        <record id="assetflow_category_asset_manager_rule" model="ir.rule">
+            <field name="name">Category Asset Manager Access</field>
+            <field name="model_id" ref="model_assetflow_category"/>
+            <field name="groups" eval="[(4, ref('group_assetflow_asset_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+    </data>
+</odoo>
