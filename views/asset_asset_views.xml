@@ -69,4 +69,35 @@
             </search>
         </field>
     </record>
+
+    <record id="view_asset_transfer_form" model="ir.ui.view">
+        <field name="name">asset.transfer.form</field>
+        <field name="model">asset.transfer</field>
+        <field name="arch" type="xml">
+            <form string="Asset Transfer">
+                <header>
+                    <button name="action_approve" type="object" string="Approve" class="btn-primary" invisible="state != 'requested'"/>
+                    <button name="action_reject" type="object" string="Reject" invisible="state != 'requested'"/>
+                    <button name="action_complete" type="object" string="Complete" class="btn-primary" invisible="state != 'approved'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="requested,approved,rejected,completed"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="asset_id"/>
+                            <field name="current_holder_id" readonly="1"/>
+                            <field name="new_holder_id"/>
+                        </group>
+                        <group>
+                            <field name="request_date"/>
+                            <field name="approval_date" readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="reason" colspan="4" nolabel="1" placeholder="Reason for transfer..."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
 </odoo>

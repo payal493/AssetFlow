@@ -30,48 +30,29 @@ class AssetTransfer(models.Model):
     )
 
     def action_approve(self):
-        today = fields.Date.context_today(self)
-        for transfer in self:
-            if transfer.state != "requested":
-                raise ValidationError("Only requested transfers can be approved.")
+        self.ensure_one()
+        if self.state != "requested":
+            raise ValidationError("Only requested transfers can be approved.")
 
-            previous_holder = transfer.asset_id.current_holder_id
-            transfer.write(
-                {
-                    "state": "approved",
-                    "approval_date": today,
-                }
-            )
-
-            transfer.asset_id.write(
-                {
-                    "current_holder_id": transfer.new_holder_id.id,
-                    "status": "allocated",
-                }
-            )
-
-            self.env["asset.transfer.history"].create(
-                {
-                    "transfer_id": transfer.id,
-                    "asset_id": transfer.asset_id.id,
-                    "previous_holder_id": previous_holder.id,
-                    "new_holder_id": transfer.new_holder_id.id,
-                    "action_date": today,
-                    "action_type": "approved",
-                }
-            )
+        self.write({"state": "approved"})
 
     def action_reject(self):
-        for transfer in self:
-            if transfer.state != "requested":
-                raise ValidationError("Only requested transfers can be rejected.")
+        self.ensure_one()
+        if self.state != "requested":
+            raise ValidationError("Only requested transfers can be rejected.")
 
-            transfer.write({"state": "rejected"})
+        self.write({"state": "rejected"})
 
     def action_complete(self):
-        for transfer in self:
-            if transfer.state != "approved":
-                raise ValidationError("Only approved transfers can be completed.")
+        self.ensure_one()
+        if self.state != "approved":
+            raise ValidationError("Only approved transfers can be completed.")
 
-            transfer.write({"state": "completed"})
+        self.asset_id.write(
+            {
+                "current_holder_id": self.new_holder_id.id,
+                "status": "allocated",
+            }
+        )
+        self.write({"state": "completed"})
 
