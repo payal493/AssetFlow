@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Root Menu for AssetFlow -->
+        <menuitem
+            id="assetflow_menu_root"
+            name="AssetFlow"
+            sequence="1"
+            web_icon="assetflow,static/description/icon.png"/>
+
+        <!-- Dashboard Menu -->
+        <menuitem
+            id="assetflow_menu_dashboard"
+            name="Dashboard"
+            parent="assetflow_menu_root"
+            sequence="10"
+            action="assetflow.action_assetflow_dashboard"/>
+
+        <!-- Employees Menu -->
+        <menuitem
+            id="assetflow_menu_employees"
+            name="Employees"
+            parent="assetflow_menu_root"
+            sequence="20"
+            action="assetflow.action_assetflow_employee_list"/>
+
+        <!-- Departments Menu -->
+        <menuitem
+            id="assetflow_menu_departments"
+            name="Departments"
+            parent="assetflow_menu_root"
+            sequence="30"
+            action="assetflow.action_assetflow_department_list"/>
+
+        <!-- Categories Menu -->
+        <menuitem
+            id="assetflow_menu_categories"
+            name="Categories"
+            parent="assetflow_menu_root"
+            sequence="40"
+            action="assetflow.action_assetflow_category_list"/>
+
+    </data>
+</odoo>
