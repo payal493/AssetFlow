@@ -1,0 +1,8 @@
+<odoo>
+    <record id="seq_asset_asset" model="ir.sequence">
+        <field name="name">Asset Tag</field>
+        <field name="code">asset.asset</field>
+        <field name="prefix">AF-</field>
+        <field name="padding">4</field>
+    </record>
+</odoo>

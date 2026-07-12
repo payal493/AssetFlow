@@ -1,0 +1,72 @@
+<odoo>
+    <record id="view_asset_asset_tree" model="ir.ui.view">
+        <field name="name">asset.asset.tree</field>
+        <field name="model">asset.asset</field>
+        <field name="arch" type="xml">
+            <list string="Assets">
+                <field name="asset_tag"/>
+                <field name="name"/>
+                <field name="category_id"/>
+                <field name="current_holder_id"/>
+                <field name="status"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_asset_asset_form" model="ir.ui.view">
+        <field name="name">asset.asset.form</field>
+        <field name="model">asset.asset</field>
+        <field name="arch" type="xml">
+            <form string="Asset">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Asset Name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Asset Information">
+                            <field name="asset_tag" readonly="1"/>
+                            <field name="name"/>
+                            <field name="category_id"/>
+                            <field name="current_holder_id"/>
+                            <field name="location"/>
+                        </group>
+                        <group string="Acquisition Information">
+                            <field name="serial_number"/>
+                            <field name="acquisition_date"/>
+                            <field name="acquisition_cost"/>
+                        </group>
+                    </group>
+                    <group string="Status Information">
+                        <group>
+                            <field name="condition"/>
+                            <field name="status"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_asset_asset_search" model="ir.ui.view">
+        <field name="name">asset.asset.search</field>
+        <field name="model">asset.asset</field>
+        <field name="arch" type="xml">
+            <search string="Assets">
+                <field name="asset_tag"/>
+                <field name="name"/>
+                <field name="category_id"/>
+                <field name="status"/>
+                <field name="current_holder_id"/>
+                <field name="location"/>
+
+                <filter name="available" string="Available" domain="[('status', '=', 'available')]"/>
+                <filter name="allocated" string="Allocated" domain="[('status', '=', 'allocated')]"/>
+                <filter name="maintenance" string="Maintenance" domain="[('status', '=', 'under_maintenance')]"/>
+                <filter name="lost" string="Lost" domain="[('status', '=', 'lost')]"/>
+                <filter name="retired" string="Retired" domain="[('status', '=', 'retired')]"/>
+            </search>
+        </field>
+    </record>
+</odoo>
